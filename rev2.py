@@ -4,7 +4,7 @@ import collections
 words_list = []
 
 # Get all of the words, add them to the words_list array
-for i in open("wordle-solver/words.txt", "r").read().split('\n'):
+for i in open("words.txt", "r").read().split('\n'):
     if len(i) == 5:
         words_list.append(i)
 
