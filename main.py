@@ -1,35 +1,33 @@
 import random
 import collections
-from termcolor import colored
 
 words_list = []
 
-for i in open("words.txt", "r").read().split('\n'):
+for i in open("wordle-solver/words.txt", "r").read().split('\n'):
     if len(i) == 5:
         words_list.append(i)
 
-color = colored('C', 'red') + colored('O', 'yellow') + colored('L', 'green') + colored('O', 'blue') + colored('R', 'magenta') + colored('S', 'cyan') + colored(' > ', 'white')
 possible_letters = []
 definitive_letters = ['','','','','']
 negative_letters = []
 guessed_letters = []
 game_running = True
-word_to_guess = input(colored('Starting word > ', 'blue'))
+word_to_guess = "train"
+
+print(word_to_guess)
 
 if word_to_guess == '':
     word_to_guess = random.choice(words_list)
-    print(colored('Alright, try ', 'red') + colored(word_to_guess, 'blue'))
+    print(word_to_guess)
 
 
 for guess_number in range(1, 7):
     if guess_number == 6:
-        print(colored('Alright, try ', 'red') + word_list[0])
+        print(word_list[0])
     else:
         word_list = []
         new_word_info = word_to_guess
-        new_color_info = input(color).lower()
-        if new_color_info == 'ggggg':
-            print('Good Game!')
+        new_color_info = input('> ').lower()
 
         for i in range(0, 5):
             if i not in guessed_letters:
@@ -42,8 +40,6 @@ for guess_number in range(1, 7):
                 negative_letters.append(new_word_info[i])       
 
 
-        reccomended_guess = ''
-        reccomended_score = 5
         for word in words_list:
             stage = 0
             for i in range(0,5):
@@ -75,35 +71,22 @@ for guess_number in range(1, 7):
                     score += guess_number*3
                 score += len(set(word))
                 indice += 1
-            #print(f'Word: {word}, Score: {score}')
             if len(word_list) <= 6 - guess_number:
                 game_running = False
             if score > highest_score:
                 best_word = word
                 highest_score = score
-                #print('Highest score was ' + str(score))
 
 
         if game_running and guess_number != 5:
-            print(colored('Try', 'blue'), best_word)
+            print(best_word)
             word_to_guess = best_word
         else:
-            it = len(word_list)
             for i in word_list:
-                print(colored('Try', 'blue'), i)
-                _ = input(color)
-                print('Estimated Guesses Remaining: ' + str(it))
-                print(len(word_list))
-                it -= 1
-        guesses_left = 6
-        if len(word_list) < 5000:
-            guesses_left = 5
-        if len(word_list) < 1000:
-            guesses_left = 3
-        if len(word_list) < 100:
-            guesses_left = 2
-        
-        print('Estimated Guesses Remaining: ' + str(guesses_left))
+                print(i)
+                _ = input('> ')
+
+
         print(len(word_list))
 
     
