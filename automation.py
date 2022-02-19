@@ -1,23 +1,31 @@
 import pyautogui
 import time
 from PIL import ImageGrab
-
+import sys
+import subprocess
 words_list = []
 
-x = [740, 833, 920, 1013, 1100]
-y = [350, 430, 510, 590, 660, 740]
+#WordGuessr
+#x = [740, 833, 920, 1013, 1100]
+#y = [350, 430, 510, 590, 660, 740]
+#white = (0, 0, 0)
+#green = (0, 124, 0)
+#yellow = (255, 165, 0)
 
-white = (0, 0, 0)
-green = (0, 124, 0)
-yellow = (255, 165, 0)
+#Squabble
+x = [805, 884, 957, 1010, 1087]
+y = [404, 477, 555, 624, 700, 773]
+white = (155, 93, 247)
+green = (46, 216, 60)
+yellow = (214, 190, 0)
 
-word_starter = "dogie"
+word_starter = "forts"
 
-pyautogui.keyDown('alt')
-time.sleep(.1)
-pyautogui.press('tab')
-time.sleep(.1)
-pyautogui.keyUp('alt')
+#pyautogui.keyDown('alt')
+#time.sleep(.1)
+#pyautogui.press('tab')
+#time.sleep(.1)
+#pyautogui.keyUp('alt')
 
 for i in open("words.txt", "r").read().split('\n'):
     if len(i) == 5:
@@ -51,18 +59,24 @@ while True:
     while guessing_stage != 2:
         guess_number += 1
         if guessing_stage == 1:
-            print(word_list[final_guess_number])
+            print('> ' + word_list[final_guess_number])
             pyautogui.write(word_list[final_guess_number])
             pyautogui.press('enter')
+            time.sleep(1)
             color_data = ''
+            final_guess_number += 1
+            time.sleep(1)
+            im = ImageGrab.grab()
             for color_x in x:
-                clr = ImageGrab.grab().getpixel((color_x,y[guess_number-1]))
+                clr = im.getpixel((color_x,y[guess_number-1]))
+                print(clr)
                 if clr == white:
                     color_data += 'b'
-                if clr == green:
-                    color_data += 'g'
                 if clr == yellow:
                     color_data += 'y'
+                if clr == white:
+                    color_data += 'b'
+            print(color_data)
             new_color_info = color_data
             if new_color_info == 'ggggg':
                 possible_letters = []
@@ -88,9 +102,12 @@ while True:
                 word_list = []
                 new_word_info = word_to_guess
                 color_data = ''
+                time.sleep(1)
+                im = ImageGrab.grab()
+                #agars
+                # im.show()
                 for color_x in x:
-                    clr = ImageGrab.grab().getpixel((color_x,y[guess_number-1]))
-                    print(clr)
+                    clr = im.getpixel((color_x,y[guess_number-1]))
                     if clr == white:
                         color_data += 'b'
                     if clr == green:
@@ -135,7 +152,7 @@ while True:
                     if stage == 5:
                         word_list.append(word)
                 
-                if len(word_list) <= 6 - guess_number:
+                if len(word_list) == 1:
                     guessing_stage = 1
                 
                 best_word = ''
