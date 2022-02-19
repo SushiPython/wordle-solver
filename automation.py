@@ -1,5 +1,6 @@
-import pyautogui
 import time
+
+import pyautogui
 from PIL import ImageGrab
 
 words_list = []
