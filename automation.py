@@ -5,6 +5,9 @@ import sys
 import subprocess
 words_list = []
 
+
+local_file_path = "main.py"
+
 #WordGuessr
 #x = [740, 833, 920, 1013, 1100]
 #y = [350, 430, 510, 590, 660, 740]
@@ -56,22 +59,26 @@ while True:
     final_guess_number = 0
     guessing_stage = 0 # 0 is guessing, 1 is definitive, 2 is guessed
 
-    while guessing_stage != 2:
+    while guess_number < 7:
         guess_number += 1
+        if guess_number == 7:
+                time.sleep(.6)
+                
+                subprocess.call(['python', 'automation.py'])
+                sys.exit(0)
         if guessing_stage == 1:
             print('> ' + word_list[final_guess_number])
             pyautogui.write(word_list[final_guess_number])
             pyautogui.press('enter')
-            time.sleep(1)
             color_data = ''
             final_guess_number += 1
-            time.sleep(1)
+            time.sleep(.6)
             im = ImageGrab.grab()
             for color_x in x:
                 clr = im.getpixel((color_x,y[guess_number-1]))
-                print(clr)
-                if clr == white:
-                    color_data += 'b'
+                #print(clr)
+                if clr == green:
+                    color_data += 'g'
                 if clr == yellow:
                     color_data += 'y'
                 if clr == white:
@@ -79,34 +86,41 @@ while True:
             print(color_data)
             new_color_info = color_data
             if new_color_info == 'ggggg':
-                possible_letters = []
-                definitive_letters = ['','','','','']
-                negative_letters = []
-                guessed_letters = []
-                game_running = True
-                guessing_number = 0
-                final_guess_number = 0
-                word_to_guess = word_starter
-                print(f'Alright, going again. Got it in {guess_number} guesses!')
-                guessing_stage = 2
+                time.sleep(.6)
+                
+                subprocess.call(['python', 'automation.py'])
+                sys.exit(0)
+            elif new_color_info != 'ggggg' and guess_number == 6:
+                time.sleep(.6)
+                
+                subprocess.call(['python', 'automation.py'])
+                sys.exit(0)    
         else:
             if guess_number == 1:
-                print(word_to_guess)
+                #print(word_to_guess)
                 pyautogui.write(word_to_guess)
                 pyautogui.press('enter')
             if guess_number == 6:
-                print(word_list[0])
-                pyautogui.write(word_list[0])
-                pyautogui.press('enter')
+                if len(word_list) != 0:
+                    #print(word_list[0])
+                    pyautogui.write(word_list[0])
+                    pyautogui.press('enter')
+                else:
+                    time.sleep(.6)
+                    
+                    subprocess.call(['python', 'automation.py'])
+                    sys.exit(0)   
+
             else:
                 word_list = []
                 new_word_info = word_to_guess
                 color_data = ''
-                time.sleep(1)
+                time.sleep(.6)
                 im = ImageGrab.grab()
                 #agars
                 # im.show()
                 for color_x in x:
+                    #print(guess_number)
                     clr = im.getpixel((color_x,y[guess_number-1]))
                     if clr == white:
                         color_data += 'b'
@@ -118,15 +132,17 @@ while True:
 
                 print(new_color_info)
                 if new_color_info == 'ggggg':
-                    possible_letters = []
-                    definitive_letters = ['','','','','']
-                    negative_letters = []
-                    guessed_letters = []
-                    game_running = True
-                    word_to_guess = word_starter
-                    print(f'Alright, going again. Got it in {guess_number} guesses!')
-                    guessing_stage = 2
+                    time.sleep(.6)
+                    
+                    subprocess.call(['python', 'automation.py'])
+                    sys.exit(0)
+                elif new_color_info != 'ggggg' and guess_number == 6:
+                    time.sleep(.6)
+                    
+                    subprocess.call(['python', 'automation.py'])
+                    sys.exit(0) 
 
+                print(new_color_info)
                 for i in range(0, 5):
                     if i not in guessed_letters:
                         guessed_letters.append(new_word_info[i])
