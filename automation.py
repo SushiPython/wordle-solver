@@ -1,6 +1,8 @@
 
 import pyautogui
 import time
+
+import pyautogui
 from PIL import ImageGrab
 import sys
 import subprocess
